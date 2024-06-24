@@ -1,0 +1,9 @@
+set -e
+ARCH_BITS=32
+TARGET_DIR="build${ARCH_BITS}"
+CURDIR="$(pwd)"
+mkdir -p "${TARGET_DIR}"
+cd "${TARGET_DIR}"
+cmake "-DARCH_FLAG=-m${ARCH_BITS}" ..
+make
+cd "${CURDIR}"

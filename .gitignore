@@ -5,3 +5,5 @@ Thumbs.db
 /out
 /CMakeSettings.json
 /Releases
+/build32
+/build64
