@@ -21,6 +21,14 @@ if (ADD_INCLUDE_SUFFIX)
   message(STATUS "Using '${INCLUDE_SUFFIX}' suffix on include directory")
 endif()
 
+if (NOT ARCH_FLAG)
+  if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(ARCH_FLAG -m64) # 64 bits
+  elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    set(ARCH_FLAG -m32)# 32 bits
+  endif()
+endif()
+
 include(CheckStructHasMember)
 CHECK_STRUCT_HAS_MEMBER("struct dirent" d_type dirent.h HAVE_STRUCT_DIRENT_D_TYPE LANGUAGE CXX)
 
@@ -34,7 +42,8 @@ add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${API_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
   VERSION ${MAJOR_VERSION}.${MINOR_VERSION}
   SOVERSION ${MAJOR_VERSION}
-  CXX_STANDARD 11)
+  CXX_STANDARD 11
+  COMPILE_OPTIONS "${ARCH_FLAG}" LINK_FLAGS "${ARCH_FLAG}")
 
 target_include_directories(${PROJECT_NAME} PRIVATE
   ${CMAKE_BINARY_DIR}
